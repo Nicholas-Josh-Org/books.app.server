@@ -1,9 +1,10 @@
-'use strict'
+'use strict';
 
 // Application dependencies
 const express = require('express');
 const cors = require('cors');
 const pg = require('pg');
+require('dotenv').config();
 
 // Application Setup
 const app = express();
@@ -20,9 +21,15 @@ app.use(cors());
 
 // API Endpoints
 app.get('/api/v1/books', (req, res) => {
-    client.query(`SELECT book_id, title, author, image_url, isbn FROM books;`)
-        .then(results => res.send(results.rows))
-        .catch(console.error);
+  client.query('SELECT book_id, title, author, image_url, isbn FROM books;')
+    .then(results => res.send(results.rows))
+    .catch(console.error);
+});
+
+app.get('/api/v1/books/:id', (req, res) => {
+  client.query('SELECT description FROM books WHERE req.params.id=book_id' )
+    .then(results => res.send(results.rows));
+
 });
 
 app.get('*', (req, res) => res.redirect(CLIENT_URL));
