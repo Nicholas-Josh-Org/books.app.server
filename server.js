@@ -39,3 +39,4 @@ app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 //app.post
 // insert into things (name) vlaues(${req.body.name});
 
+// ctx = context.  this can "smush" together res and req into one.
