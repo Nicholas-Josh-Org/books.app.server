@@ -13,16 +13,17 @@ const CLIENT_URL = process.env.CLIENT_URL;
 
 // Database Setup
 app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 const client = new pg.Client(process.env.DATABASE_URL);
 client.connect();
 client.on('error', err => console.error(err));
 
-// Application Middleware
+// Application Middleware`
 app.use(cors());
 
 // API Endpoints
 app.get('/api/v1/books', (req, res) => { // this is an ajax call
-  client.query('SELECT book_id, title, author, image_url, isbn FROM books;') //this uses PG to send client queries. 
+  client.query('SELECT book_id, title, author, image_url, isbn FROM books;') //this uses PG to send client queries.
     .then(results => res.send(results.rows))//this is an ajax get promis return, when pg is sent on line 24, then given a responpse or callback, it then does what is inside the .then()
     .catch(console.error);// .catch is an error response promise.
 });
@@ -35,6 +36,12 @@ app.get('/api/v1/books/:id', (req, res) => {
 app.get('*', (req, res) => res.redirect(CLIENT_URL));
 app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
+
+app.post('/api/v1/books', (req, res) => {
+  client.query(`
+  INSERT INTO books (author, title, isbn) VALUES ('${req.body.author}','${req.body.title}','${req.body.isbn}');
+  `).then(results => res.send(results.rows)).then(console.log('post'));
+});
 
 //app.post
 // insert into things (name) vlaues(${req.body.name});
