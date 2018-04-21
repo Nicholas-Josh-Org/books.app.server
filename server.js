@@ -39,7 +39,7 @@ app.listen(PORT, () => console.log(`Listening on port: ${PORT}`));
 
 app.post('/api/v1/books', (req, res) => {
   client.query(`
-  INSERT INTO books (author, title, isbn) VALUES ('${req.body.author}','${req.body.title}','${req.body.isbn}');
+  INSERT INTO books (author, title, isbn, image_url, description) VALUES ('${req.body.author}','${req.body.title}','${req.body.isbn}','${req.body.image_url}','${req.body.description}');
   `).then(results => res.send(results.rows)).then(console.log('post'));
 });
 
